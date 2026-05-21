@@ -2364,7 +2364,15 @@ section{position:relative;z-index:2}
     }
   }
   sendBtn && sendBtn.addEventListener('click', sendChat);
+  let isComposingText = false;
+  modalInput && modalInput.addEventListener('compositionstart', () => {
+    isComposingText = true;
+  });
+  modalInput && modalInput.addEventListener('compositionend', () => {
+    isComposingText = false;
+  });
   modalInput && modalInput.addEventListener('keydown', (e) => {
+    if(isComposingText || e.isComposing || e.keyCode === 229) return;
     if(e.key === 'Enter' && !e.shiftKey){
       e.preventDefault();
       sendChat();
