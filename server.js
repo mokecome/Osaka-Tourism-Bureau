@@ -83,7 +83,10 @@ async function handleChat(req, res) {
     return;
   }
 
-  if (!process.env.OPENAI_API_KEY) {
+  const openaiApiKey = process.env.OPENAI_API_KEY?.trim();
+  const openaiModel = process.env.OPENAI_MODEL?.trim() || "gpt-4o-mini";
+
+  if (!openaiApiKey) {
     sendJson(res, 500, { error: "OPENAI_API_KEY is not set in .env." });
     return;
   }
@@ -100,10 +103,10 @@ async function handleChat(req, res) {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        authorization: `Bearer ${process.env.OPENAI_API_KEY}`
+        authorization: `Bearer ${openaiApiKey}`
       },
       body: JSON.stringify({
-        model: process.env.OPENAI_MODEL || "gpt-4o-mini",
+        model: openaiModel,
         instructions:
           "You are the Osaka Tourism Bureau AI analyst for a Japanese tourism data website. Answer in Japanese. Be concise, practical, and business-oriented. If you do not have enough source data for a numeric claim, say that the site data connection is not available in this demo and give a cautious qualitative answer.",
         input: [
@@ -126,7 +129,7 @@ async function handleChat(req, res) {
 
     sendJson(res, 200, {
       answer: extractOutputText(data) || "回答を生成できませんでした。",
-      model: process.env.OPENAI_MODEL || "gpt-4o-mini"
+      model: openaiModel
     });
   } catch (error) {
     sendJson(res, 500, { error: error.message || "Unexpected server error." });

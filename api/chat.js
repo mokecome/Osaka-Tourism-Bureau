@@ -23,11 +23,14 @@ function extractOutputText(data) {
 }
 
 export default async function handler(request) {
+  const openaiApiKey = process.env.OPENAI_API_KEY?.trim();
+  const openaiModel = process.env.OPENAI_MODEL?.trim() || "gpt-4o-mini";
+
   if (request.method !== "POST") {
     return sendJson(405, { error: "Method not allowed." });
   }
 
-  if (!process.env.OPENAI_API_KEY) {
+  if (!openaiApiKey) {
     return sendJson(500, { error: "OPENAI_API_KEY is not set." });
   }
 
@@ -42,10 +45,10 @@ export default async function handler(request) {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        authorization: `Bearer ${process.env.OPENAI_API_KEY}`
+        authorization: `Bearer ${openaiApiKey}`
       },
       body: JSON.stringify({
-        model: process.env.OPENAI_MODEL || "gpt-4o-mini",
+        model: openaiModel,
         instructions:
           "You are the Osaka Tourism Bureau AI analyst for a Japanese tourism data website. Answer in Japanese. Be concise, practical, and business-oriented. If you do not have enough source data for a numeric claim, say that the site data connection is not available in this demo and give a cautious qualitative answer.",
         input: [
@@ -67,7 +70,7 @@ export default async function handler(request) {
 
     return sendJson(200, {
       answer: extractOutputText(data) || "回答を生成できませんでした。",
-      model: process.env.OPENAI_MODEL || "gpt-4o-mini"
+      model: openaiModel
     });
   } catch (error) {
     return sendJson(500, { error: error.message || "Unexpected server error." });
