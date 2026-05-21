@@ -3,6 +3,11 @@ import { existsSync, readFileSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  buildChatContext,
+  buildInstructions,
+  detectResponseLanguage
+} from "./lib/chat-context.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = __dirname;
@@ -99,6 +104,9 @@ async function handleChat(req, res) {
       return;
     }
 
+    const sourceContext = buildChatContext(text);
+    const responseLanguage = detectResponseLanguage(text);
+
     const upstream = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
       headers: {
@@ -107,12 +115,16 @@ async function handleChat(req, res) {
       },
       body: JSON.stringify({
         model: openaiModel,
-        instructions:
-          "You are the Osaka Tourism Bureau AI analyst for a Japanese tourism data website. Answer in Japanese. Be concise, practical, and business-oriented. If you do not have enough source data for a numeric claim, say that the site data connection is not available in this demo and give a cautious qualitative answer.",
+        instructions: buildInstructions(),
         input: [
           {
             role: "user",
-            content: [{ type: "input_text", text }]
+            content: [
+              {
+                type: "input_text",
+                text: `${sourceContext}\n\nRESPONSE LANGUAGE\n${responseLanguage}\n\nUSER QUESTION\n${text}`
+              }
+            ]
           }
         ],
         max_output_tokens: 700

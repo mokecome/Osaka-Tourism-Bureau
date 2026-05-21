@@ -1,3 +1,9 @@
+import {
+  buildChatContext,
+  buildInstructions,
+  detectResponseLanguage
+} from "../lib/chat-context.js";
+
 function sendJson(res, status, payload) {
   res.statusCode = status;
   res.setHeader("content-type", "application/json; charset=utf-8");
@@ -53,6 +59,9 @@ export default async function handler(req, res) {
       return;
     }
 
+    const sourceContext = buildChatContext(text);
+    const responseLanguage = detectResponseLanguage(text);
+
     const upstream = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
       headers: {
@@ -61,12 +70,16 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: openaiModel,
-        instructions:
-          "You are the Osaka Tourism Bureau AI analyst for a Japanese tourism data website. Answer in Japanese. Be concise, practical, and business-oriented. If you do not have enough source data for a numeric claim, say that the site data connection is not available in this demo and give a cautious qualitative answer.",
+        instructions: buildInstructions(),
         input: [
           {
             role: "user",
-            content: [{ type: "input_text", text }]
+            content: [
+              {
+                type: "input_text",
+                text: `${sourceContext}\n\nRESPONSE LANGUAGE\n${responseLanguage}\n\nUSER QUESTION\n${text}`
+              }
+            ]
           }
         ],
         max_output_tokens: 700
