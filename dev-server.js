@@ -89,7 +89,7 @@ async function handleChat(req, res) {
   }
 
   const openaiApiKey = process.env.OPENAI_API_KEY?.trim();
-  const openaiModel = process.env.OPENAI_MODEL?.trim() || "gpt-4o-mini";
+  const openaiModel = process.env.OPENAI_MODEL?.trim() || "gpt-4.1";
 
   if (!openaiApiKey) {
     sendJson(res, 500, { error: "OPENAI_API_KEY is not set in .env." });

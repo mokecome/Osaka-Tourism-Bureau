@@ -39,7 +39,7 @@ async function readJsonBody(req) {
 
 export default async function handler(req, res) {
   const openaiApiKey = process.env.OPENAI_API_KEY?.trim();
-  const openaiModel = process.env.OPENAI_MODEL?.trim() || "gpt-4o-mini";
+  const openaiModel = process.env.OPENAI_MODEL?.trim() || "gpt-4.1";
 
   if (req.method !== "POST") {
     sendJson(res, 405, { error: "Method not allowed." });
