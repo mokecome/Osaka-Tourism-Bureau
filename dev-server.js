@@ -7,6 +7,7 @@ import {
   buildAnswerDisplay,
   buildChatContext,
   buildInstructions,
+  buildRefusalResponse,
   detectResponseLanguage
 } from "./lib/chat-context.js";
 
@@ -102,6 +103,12 @@ async function handleChat(req, res) {
     const text = typeof message === "string" ? message.trim() : "";
     if (!text) {
       sendJson(res, 400, { error: "Message is required." });
+      return;
+    }
+
+    const refusal = buildRefusalResponse(text);
+    if (refusal) {
+      sendJson(res, 200, refusal);
       return;
     }
 
