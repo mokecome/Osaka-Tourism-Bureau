@@ -1385,7 +1385,7 @@ section{position:relative;z-index:2}
   right:24px;
   z-index:100;
   display:none;
-  width:380px;
+  width:520px;
   max-width:calc(100vw - 32px);
 }
 .modal.open{
@@ -1561,6 +1561,170 @@ section{position:relative;z-index:2}
   color:var(--red);
 }
 
+.chat-message--assistant-card{
+  justify-content:flex-start;
+}
+.chat-message--assistant-card .answer-card{
+  width:100%;
+  max-width:100%;
+}
+.answer-card{
+  background:#fff;
+  border:1px solid rgba(22,21,19,.12);
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 10px 26px -20px rgba(22,21,19,.45);
+}
+.answer-card-context{
+  display:inline-flex;
+  align-items:center;
+  max-width:100%;
+  margin:12px 12px 0;
+  padding:5px 10px;
+  border-radius:999px;
+  background:#D8BD45;
+  color:var(--ink);
+  font-size:11px;
+  line-height:1.35;
+  font-weight:800;
+  overflow-wrap:anywhere;
+}
+.answer-card-question{
+  margin:12px 12px 14px auto;
+  width:max-content;
+  max-width:86%;
+  padding:10px 14px;
+  border-radius:14px;
+  background:#14243C;
+  color:#fff;
+  font-family:var(--serif-jp);
+  font-size:13px;
+  font-weight:700;
+  line-height:1.45;
+}
+.answer-card-panel{
+  border-top:1px solid rgba(22,21,19,.12);
+}
+.answer-card-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:14px 16px 12px;
+  border-bottom:1px solid rgba(22,21,19,.08);
+}
+.answer-card-level{
+  flex-shrink:0;
+  padding:5px 10px;
+  border-radius:999px;
+  background:#4F9A71;
+  color:#fff;
+  font-size:11px;
+  line-height:1;
+  font-weight:900;
+}
+.answer-card-title{
+  margin:0;
+  font-family:var(--serif-jp);
+  font-size:15px;
+  line-height:1.4;
+  color:var(--ink);
+}
+.answer-card-body{
+  padding:14px 16px 16px;
+}
+.answer-card-summary{
+  margin:0;
+  color:var(--ink-soft);
+  font-family:var(--serif-jp);
+  font-size:13px;
+  line-height:1.75;
+}
+.answer-card-label{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:16px 0 8px;
+  color:#B94D31;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.04em;
+}
+.answer-card-label::before{
+  content:"";
+  width:4px;
+  height:15px;
+  border-radius:2px;
+  background:#E85D27;
+}
+.answer-kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:8px;
+}
+.answer-kpi{
+  min-width:0;
+  padding:10px;
+  border-radius:10px;
+  background:#FBFAF4;
+  border:1px solid rgba(22,21,19,.08);
+}
+.answer-kpi-value{
+  display:block;
+  font-family:var(--serif-jp);
+  font-size:18px;
+  font-weight:900;
+  line-height:1.15;
+  color:#14243C;
+  overflow-wrap:anywhere;
+}
+.answer-kpi-label{
+  display:block;
+  margin-top:5px;
+  font-size:10.5px;
+  line-height:1.45;
+  color:var(--mute);
+  overflow-wrap:anywhere;
+}
+.answer-insights{
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+  margin:0;
+}
+.answer-insight{
+  display:grid;
+  grid-template-columns:10px 1fr;
+  gap:8px;
+  color:var(--ink-soft);
+  font-family:var(--serif-jp);
+  font-size:12.5px;
+  line-height:1.65;
+}
+.answer-insight::before{
+  content:"";
+  width:5px;
+  height:5px;
+  margin-top:.75em;
+  border-radius:50%;
+  background:#B94D31;
+}
+.answer-source{
+  margin-top:14px;
+  padding-top:10px;
+  border-top:1px dashed rgba(22,21,19,.18);
+  color:var(--mute);
+  font-size:10.5px;
+  line-height:1.5;
+  overflow-wrap:anywhere;
+}
+.answer-source a{
+  color:#14243C;
+  font-weight:800;
+  text-decoration:underline;
+  text-decoration-thickness:1px;
+  text-underline-offset:2px;
+}
+
 .modal-note{
   margin-top:10px;
   padding:0 4px;
@@ -1625,6 +1789,13 @@ section{position:relative;z-index:2}
   .modal-box{
     height:auto;
     max-height:calc(100vh - 32px);
+  }
+  .answer-card-question{
+    max-width:100%;
+    width:auto;
+  }
+  .answer-kpi-grid{
+    grid-template-columns:1fr;
   }
 }
 @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
@@ -2324,6 +2495,12 @@ section{position:relative;z-index:2}
   const sendBtn = document.getElementById('modalSend');
   const chatLog = document.getElementById('modalChatLog');
   const sendBtnOriginalHTML = sendBtn ? sendBtn.innerHTML : '';
+  function createEl(tag, className, text){
+    const el = document.createElement(tag);
+    if(className) el.className = className;
+    if(text !== undefined && text !== null) el.textContent = text;
+    return el;
+  }
   function appendMessage(role, text){
     if(!chatLog) return;
     const item = document.createElement('div');
@@ -2333,6 +2510,71 @@ section{position:relative;z-index:2}
     item.appendChild(bubble);
     chatLog.appendChild(item);
     chatLog.scrollIntoView({ block:'end', behavior:'smooth' });
+  }
+  function appendAssistantCard(display, fallbackText){
+    if(!chatLog || !display){
+      appendMessage('assistant', fallbackText || '');
+      return;
+    }
+
+    const item = createEl('div', 'chat-message chat-message--assistant-card');
+    const card = createEl('article', 'answer-card');
+
+    if(display.context){
+      card.appendChild(createEl('div', 'answer-card-context', '● 文脈：' + display.context));
+    }
+
+    card.appendChild(createEl('div', 'answer-card-question', display.title || 'AI分析'));
+
+    const panel = createEl('div', 'answer-card-panel');
+    const head = createEl('div', 'answer-card-head');
+    head.appendChild(createEl('span', 'answer-card-level', display.level || 'Lv.1'));
+    head.appendChild(createEl('h4', 'answer-card-title', display.sectionTitle || 'AI分析サマリー'));
+    panel.appendChild(head);
+
+    const body = createEl('div', 'answer-card-body');
+    body.appendChild(createEl('p', 'answer-card-summary', display.summary || fallbackText || ''));
+
+    if(Array.isArray(display.kpis) && display.kpis.length){
+      body.appendChild(createEl('div', 'answer-card-label', 'KPI'));
+      const grid = createEl('div', 'answer-kpi-grid');
+      display.kpis.slice(0, 4).forEach((kpi) => {
+        const kpiEl = createEl('div', 'answer-kpi');
+        kpiEl.appendChild(createEl('strong', 'answer-kpi-value', kpi.value || '-'));
+        kpiEl.appendChild(createEl('span', 'answer-kpi-label', kpi.label || '指標'));
+        grid.appendChild(kpiEl);
+      });
+      body.appendChild(grid);
+    }
+
+    if(Array.isArray(display.insights) && display.insights.length){
+      body.appendChild(createEl('div', 'answer-card-label', '分析'));
+      const list = createEl('div', 'answer-insights');
+      display.insights.slice(0, 3).forEach((insight) => {
+        list.appendChild(createEl('div', 'answer-insight', insight));
+      });
+      body.appendChild(list);
+    }
+
+    if(display.source || display.sourceUrl){
+      const source = createEl('div', 'answer-source');
+      source.appendChild(document.createTextNode('出典：' + (display.source || '大阪観光データハブ')));
+      if(display.sourceUrl){
+        source.appendChild(document.createTextNode(' / '));
+        const link = createEl('a', '', 'data_03');
+        link.href = display.sourceUrl;
+        link.target = '_blank';
+        link.rel = 'noopener';
+        source.appendChild(link);
+      }
+      body.appendChild(source);
+    }
+
+    panel.appendChild(body);
+    card.appendChild(panel);
+    item.appendChild(card);
+    chatLog.appendChild(item);
+    item.scrollIntoView({ block:'end', behavior:'smooth' });
   }
   function setSending(isSending){
     if(!sendBtn) return;
@@ -2355,7 +2597,7 @@ section{position:relative;z-index:2}
       });
       const data = await res.json();
       if(!res.ok) throw new Error(data.error || 'AIへの接続に失敗しました。');
-      appendMessage('assistant', data.answer || '回答を生成できませんでした。');
+      appendAssistantCard(data.display, data.answer || '回答を生成できませんでした。');
     }catch(err){
       appendMessage('error', err.message || 'AIへの接続に失敗しました。');
     }finally{

@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
+  buildAnswerDisplay,
   buildChatContext,
   buildInstructions,
   detectResponseLanguage
@@ -139,8 +140,11 @@ async function handleChat(req, res) {
       return;
     }
 
+    const answer = extractOutputText(data) || "回答を生成できませんでした。";
+
     sendJson(res, 200, {
-      answer: extractOutputText(data) || "回答を生成できませんでした。",
+      answer,
+      display: buildAnswerDisplay(text, answer),
       model: openaiModel
     });
   } catch (error) {

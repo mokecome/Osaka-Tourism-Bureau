@@ -1,4 +1,5 @@
 import {
+  buildAnswerDisplay,
   buildChatContext,
   buildInstructions,
   detectResponseLanguage
@@ -94,8 +95,11 @@ export default async function handler(req, res) {
       return;
     }
 
+    const answer = extractOutputText(data) || "回答を生成できませんでした。";
+
     sendJson(res, 200, {
-      answer: extractOutputText(data) || "回答を生成できませんでした。",
+      answer,
+      display: buildAnswerDisplay(text, answer),
       model: openaiModel
     });
   } catch (error) {
