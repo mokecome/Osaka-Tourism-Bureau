@@ -13,6 +13,7 @@ import { findRelevantSweets } from "../lib/sweets-context.js";
 import { findRelevantJntoFacts } from "../lib/jnto-context.js";
 import { findRelevantKix } from "../lib/kix-context.js";
 import { findRelevantLgbtqFacts } from "../lib/lgbtq-context.js";
+import { findRelevantKbChapters } from "../lib/kb-context.js";
 
 const cases = [
   // dashboard hits
@@ -48,16 +49,24 @@ const cases = [
   "LGBTQ+旅客的居住國前三名",
   "大阪LGBTQ+滿足度",
   "ゲイホテルへの関心度",
-  // off-topic, must refuse
+  // KB hits — previously refused, now should hit the knowledge base
   "請問大阪燒的歷史是什麼？",
-  "推薦大阪一蘭拉麵分店",
-  "大阪壽司推薦",
-  "梅田燒肉店推薦",
+  "大阪有名的拉麵店",
+  "大阪壽司有什麼特色?",
   "從關西機場到難波怎麼走?",
-  "韓國旅客喜歡哪些甜點店?",
   "USJ 門票多少錢?",
-  "京都的櫻花季什麼時候開始?",
-  "沖繩飯店推薦"
+  "大阪城天守閣的歷史",
+  "大阪城公園賞櫻什麼時候?",
+  "大阪有什麼祭典?",
+  "大阪 e-pass 樂遊券是什麼?",
+  "大阪日本橋有什麼?",
+  "大阪的棒球隊有哪些?",
+  "從大阪去京都怎麼走?",
+  // genuine off-topic — must still refuse
+  "沖繩飯店推薦",
+  "東京迪士尼門票",
+  "韓國旅客喜歡哪些甜點店?", // market-mentioned-no-cell
+  "梅田燒肉店推薦"            // KIX doesn't list specific yakiniku shops
 ];
 
 for (const q of cases) {
@@ -85,6 +94,10 @@ for (const q of cases) {
   const lgbtq = findRelevantLgbtqFacts(q, 3);
   console.log(`LGBTQ facts: ${lgbtq.facts.length} (topic=${lgbtq.topicMatched})`);
   for (const f of lgbtq.facts) console.log(`  [${f.id}] ${f.topic}`);
+
+  const kb = findRelevantKbChapters(q, 3);
+  console.log(`KB chapters: ${kb.chapters.length} (osaka=${kb.osakaScoped})`);
+  for (const c of kb.chapters) console.log(`  [${c.id}] 第${c.number_zh}章 ${c.title} (s=${c.score})`);
 
   const refusal = buildRefusalResponse(q);
   console.log("server refusal:", refusal ? `YES -> ${refusal.answer}` : "no (LLM will be called)");
