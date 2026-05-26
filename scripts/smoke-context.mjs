@@ -18,17 +18,25 @@ const cases = [
   "美国游客获取大阪旅游信息的主要渠道",
   "Which markets are most interested in night views in Osaka?",
   "新加坡旅客選擇活動時最重視什麼因素？",
-  // sweets page hits
+  // sweets page hits (specific dessert terms)
   "大阪有什麼好的甜點店?",
   "推薦大阪 Instagram 拍照的甜點",
   "金箔雪糕在哪裡吃?",
   "心齋橋有什麼甜點?",
   "棉花糖店在哪",
-  // off-topic, must refuse via combined hasEvidence=false
-  "請問大阪燒的歷史是什麼？",
-  "推薦大阪一蘭拉麵分店",
-  "從關西機場到難波怎麼走?",
-  "韓國旅客喜歡哪些甜點店?", // crosses sources but neither has the answer
+  // sweets page hits (loosened: generic shop/recommendation)
+  "心齋橋有什麼好吃的?",
+  "梅田美食推薦",
+  "大阪有什麼推薦的店?",
+  "心齋橋有什麼餐廳?",
+  "難波想吃下午茶",
+  // off-topic, must refuse
+  "請問大阪燒的歷史是什麼？",         // blocked by 大阪燒
+  "推薦大阪一蘭拉麵分店",            // blocked by 拉麵
+  "大阪壽司推薦",                    // blocked by 壽司
+  "梅田燒肉店推薦",                  // blocked by 燒肉
+  "從關西機場到難波怎麼走?",         // no topic match
+  "韓國旅客喜歡哪些甜點店?",         // market + no dashboard cell
   "USJ 門票多少錢?"
 ];
 
