@@ -16,7 +16,7 @@ from pathlib import Path
 from pypdf import PdfReader
 
 ROOT = Path(__file__).resolve().parents[1]
-PDF = ROOT / "JNTO_訪日観光統計_完全版.pdf"
+PDF = ROOT / "sources" / "JNTO_訪日観光統計_完全版.pdf"
 OUT = ROOT / "data" / "osaka-jnto.json"
 
 

@@ -22,7 +22,7 @@ from pathlib import Path
 import openpyxl
 
 ROOT = Path(__file__).resolve().parents[1]
-XLSX_PATH = ROOT / "大阪海外市場調查_dashboard.xlsx"
+XLSX_PATH = ROOT / "sources" / "大阪海外市場調查_dashboard.xlsx"
 OUT_PATH = ROOT / "data" / "osaka-dashboard.json"
 
 SKIP_ITEMS = {"圖上總計/平均", "計算總計", "差異", "計算平均"}
