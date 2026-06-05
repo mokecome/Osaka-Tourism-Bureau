@@ -62,11 +62,21 @@ const cases = [
   "大阪日本橋有什麼?",
   "大阪的棒球隊有哪些?",
   "從大阪去京都怎麼走?",
+  // 5 chatbot preset questions (must answer via JNTO)
+  "2025年に訪日外国人が最も多く訪れた都道府県トップ8はどこですか？",
+  "中国・台湾・韓国の3市場における2026年のパフォーマンスの違いは何ですか？",
+  "台湾市場は2020年のコロナ禍の底から2025年にかけて、どのように回復しましたか？",
+  "訪日外国人が「次回やりたいこと」のトップ5は何ですか？",
+  "「次回やりたい」の比率が継続して上昇している体験項目はどれですか？",
+  // old placeholder presets — should now REFUSE (no source has them)
+  "3つのKPIを解説",
+  "本日のハイライト",
+  "今月の重要トピック",
   // genuine off-topic — must still refuse
   "沖繩飯店推薦",
   "東京迪士尼門票",
   "韓國旅客喜歡哪些甜點店?", // market-mentioned-no-cell
-  "梅田燒肉店推薦"            // KIX doesn't list specific yakiniku shops
+  "梅田燒肉店推薦"            // KB lists 松阪牛 yakiniku, so this may answer
 ];
 
 for (const q of cases) {

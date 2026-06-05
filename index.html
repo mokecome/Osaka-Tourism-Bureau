@@ -1506,9 +1506,9 @@ section{position:relative;z-index:2}
   border:1px solid rgba(22,21,19,.1);
   border-radius:14px;
   font-family:var(--serif-jp);
-  font-size:13px;font-weight:600;
+  font-size:13px;font-weight:600;line-height:1.5;
   color:var(--ink);
-  display:flex;align-items:center;gap:9px;
+  display:flex;align-items:flex-start;gap:9px;
   transition:all .2s ease;
   cursor:pointer;
   width:100%;
@@ -1518,6 +1518,7 @@ section{position:relative;z-index:2}
   width:6px;height:6px;border-radius:50%;
   background:var(--lime-dark);
   flex-shrink:0;
+  margin-top:7px;
 }
 .modal-quick-q button:hover{
   border-color:var(--ink);
@@ -2412,11 +2413,11 @@ section{position:relative;z-index:2}
       <p class="modal-section-label">よくある質問から</p>
 
       <div class="modal-quick-q">
-        <button data-q="本日のハイライト">本日のハイライト</button>
-        <button data-q="3つのKPIを解説">3つのKPIを解説</button>
-        <button data-q="今月の重要トピック">今月の重要トピック</button>
-        <button data-q="大阪観光の現状">大阪観光の現状</button>
-        <button data-q="韓国市場の最新動向">韓国市場の最新動向</button>
+        <button data-q="2025年に訪日外国人が最も多く訪れた都道府県トップ8はどこですか？">2025年に訪日外国人が最も多く訪れた都道府県トップ8はどこですか？</button>
+        <button data-q="中国・台湾・韓国の3市場における2026年のパフォーマンスの違いは何ですか？">中国・台湾・韓国の3市場における2026年のパフォーマンスの違いは何ですか？</button>
+        <button data-q="台湾市場は2020年のコロナ禍の底から2025年にかけて、どのように回復しましたか？">台湾市場は2020年のコロナ禍の底から2025年にかけて、どのように回復しましたか？</button>
+        <button data-q="訪日外国人が「次回やりたいこと」のトップ5は何ですか？">訪日外国人が「次回やりたいこと」のトップ5は何ですか？</button>
+        <button data-q="「次回やりたい」の比率が継続して上昇している体験項目はどれですか？">「次回やりたい」の比率が継続して上昇している体験項目はどれですか？</button>
       </div>
 
       <div class="modal-chat-log" id="modalChatLog" aria-live="polite">
